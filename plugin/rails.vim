@@ -88,6 +88,9 @@ function! s:Detect(filename)
   if fn =~ '[\/]config[\/]environment\.rb$'
     return s:BufInit(strpart(fn,0,strlen(fn)-22))
   endif
+  if fn =~ '[\/]script[\/]rails\.rb$'
+    return s:BufInit(strpart(fn,0,strlen(fn)-16))
+  endif
   if isdirectory(fn)
     let fn = fnamemodify(fn,':s?[\/]$??')
   else
@@ -104,7 +107,7 @@ function! s:Detect(filename)
   endwhile
   let ofn = ""
   while fn != ofn
-    if filereadable(fn . "/config/environment.rb")
+    if filereadable(fn . "/config/environment.rb") || filereadable(fn . "/script/rails")
       return s:BufInit(fn)
     endif
     let ofn = fn
